@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+  /* Custom button color */
+  .btn-custom {
+      background-color: #6b4226;  /* Coffee brown */
+      color: white;
+  }
+
+  .btn-custom:hover {
+      background-color: #8c5a38; /* Slightly lighter brown on hover */
+  }
+</style>
+{% endblock head %}
+{% block title %}
+Home
+{% endblock title %}
+{% block body %}
+
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+      <div class = "container-fluid px-0">
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="static/img/caroline-hernandez-hyBgdc3khOA-unsplash.jpg" class="d-block w-100" alt="...">
+                <div class ="carousel-caption d-none d-md-block">
+                  <h5>BEAUTIFUL!</h5>
+                  <p>What a Beauty</p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="static/img/cafe.jpg" class="d-block w-100" alt="...">
+                <div class ="carousel-caption d-none d-md-block">
+                  <h5>Come, Visit Us!</h5>
+                  <p>Photo by <a href="https://unsplash.com/@sevcovic23?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Petr Sevcovic</a> on <a href="https://unsplash.com/photos/people-inside-cafe-qE1jxYXiwOA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+                  </p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="static/img/coffee-hero.jpg" class="d-block w-100" alt="...">
+                <div class ="carousel-caption d-none d-md-block">
+                  <h5>Sip</h5>
+                  <p></p>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+    </div>
+    </div>
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Samantha's Brewery</h1>
+      <p class="lead">Brewing Memories, One Cup At A Time</p>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <button type="button" class="btn btn-custom btn-lg px-4 me-md-2"><a class="nav-link" aria-current="page" href="/menu">View Menu</a></button>
+        <button type="button" class="btn btn-custom btn-lg px-4"> <a class="nav-link" aria-current="page" href="/products"> View Products</a></button>
+        <button type="button" class="btn btn-custom btn-lg px-4 me-md-2"> <a class="nav-link" aria-current="page" href="/books">Lend A Book</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
