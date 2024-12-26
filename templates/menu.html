@@ -5,43 +5,37 @@ Menu
 {% endblock title %}
 
 {% block body %}
-<h1 class="py-5">Menu</h1>
-<div class="container mt-4">
-    <div class="row">
-      <!-- Menu Item 1 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="static/img/burger.jpg" class="card-img-top" alt="Burger">
-          <div class="card-body">
-            <h5 class="card-title">Classic Burger</h5>
-            <p class="card-text">A juicy beef patty with fresh lettuce, tomato, and cheese.</p>
-            <p class="card-text"><strong>Price: $8.99</strong></p>
+  <div class="container">
+    <h1 class="my-4 text-center">Menu</h1>
+
+    {% if categories %}
+      {% for category, items in categories.items %}
+        <div class="category-section">
+          <h3 class="my-3">{{ category }}</h3>  <!-- Displaying human-readable type -->
+
+          <div class="row">
+            {% for item in items %}
+              <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                  {% if item.image %}
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                  {% else %}
+                    <p>No image available</p>  <!-- Debugging line -->
+                  {% endif %}
+                  <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">{{ item.desc }}</p>
+                    <p class="card-text"><strong>₹{{ item.price }}</strong></p>
+                    <a href="#" class="btn btn-primary">Order Now</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
           </div>
         </div>
-      </div>
-      <!-- Menu Item 2 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="static/img/alfredo pasta.jpg" class="card-img-top" alt="Pasta">
-          <div class="card-body">
-            <h5 class="card-title">Creamy Alfredo Pasta</h5>
-            <p class="card-text">Rich and creamy sauce with freshly cooked pasta.</p>
-            <p class="card-text"><strong>Price: $12.99</strong></p>
-          </div>
-        </div>
-      </div>
-      <!-- Menu Item 3 -->
-      <div class="col-md-4">
-        <div class="card">
-          <img src="static/img/salad.jpg" class="card-img-top" alt="Salad">
-          <div class="card-body">
-            <h5 class="card-title">Garden Fresh Salad</h5>
-            <p class="card-text">Crisp vegetables with a tangy vinaigrette.</p>
-            <p class="card-text"><strong>Price: $6.99</strong></p>
-          </div>
-        </div>
-      </div>
-    </div>
+      {% endfor %}
+    {% else %}
+      <p>No items available in the menu.</p>
+    {% endif %}
   </div>
-  
-{% endblock body %}
+{% endblock %}

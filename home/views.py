@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from datetime import datetime
-from home.models import Contact
+from home.models import Contact, Food_Item, ProductItem
 from django.contrib import messages
+from collections import defaultdict
+import json
 
 # Create your views here.
 def index(request):
@@ -22,10 +24,33 @@ def contact(request):
      return render(request, 'contact.html')
 
 def products(request):
-     return render(request,"products.html")
+     product_items = ProductItem.objects.prefetch_related('images').all()
+     categories = defaultdict(list)
+     for item in product_items:
+        categories[item.get_type_display()].append(item)
+     categories = dict(categories)
+     return render(request,"products.html", {'categories':categories})
+
+def bookingcart(request):
+     items = json.loads(request.GET.get('items', '[]')) 
+     cartCount = int(request.GET.get('count', 0))
+     product_items=[]
+     for item in items:
+          product = ProductItem.objects.prefetch_related('images').filter(name=item).first()
+          if(product):
+               product_items.append(product)
+     return render(request, "bookingcart.html",{'cartCount':cartCount, 'products':product_items})
 
 def books(request):
      return render(request,"books.html")
 
 def menu(request):
-     return render(request, "menu.html")
+     food_items = Food_Item.objects.all()
+     categories = defaultdict(list)
+     for item in food_items:
+        categories[item.get_type_display()].append(item)
+     categories = dict(categories)
+     return render(request, "menu.html", {'categories':categories})
+
+def gallery(request):
+     return render(request,'gallery.html')

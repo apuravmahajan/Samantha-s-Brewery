@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Booking Cart
+{% endblock title %}
+
+{% block body %}
+
+<h1 class="py-5">Booking Cart</h1>
+<p><span class="cartCount">{{cartCount}}</span> number of items added to cart</p>
+<div class="row">
+    {% for item in products %}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            {% if item.images.all %}
+            <div id="carousel-{{ item.id }}" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for image in item.images.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ image.caption }}">
+                            {% if image.caption %}
+                                <div class="carousel-caption d-none d-md-block">
+                                    <p>{{ image.caption }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ item.id }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ item.id }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        {% else %}
+            <img src="{{ item.images.first.image.url }}" class="card-img-top" alt="{{ item.name }}">
+        {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="card-text">{{ item.desc }}</p>
+            <p class="card-text"><strong>₹{{ item.price }}</strong></p>
+            <button class="btn btn-primary remove">remove</button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button id ="book" class="btn btn-primary fixed-bottom">Book <span class = "cartCount">{{cartCount}}</span> product(s)</button>
+
+  <script>
+    let cartCount = parseInt({{ cartCount }},10); 
+    const cartCountElements = document.querySelectorAll('.cartCount');
+    const removeButton = document.querySelectorAll('.remove');
+
+    removeButton.forEach(button =>{
+        button.addEventListener('click', ()=>{
+            
+                if (cartCount > 0) { 
+                    cartCount--; 
+                    cartCountElements.forEach(element => {
+                        element.textContent = cartCount;
+                    }); 
+                }
+        });
+
+    });
+    
+  </script>
+
+{% endblock body %}

@@ -29,13 +29,16 @@
               <a class="nav-link {% if request.resolver_match.url_name == 'products' %}active{% endif %}" href="/products">Products</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'books' %}active{% endif %}" href="/books">Lend A Book</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'books' %}active{% endif %}" href="/books">Book Club</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="/contact">Contact Us</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="/about">About Us</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}" href="/gallery">Gallery</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"> About Us</a>
             </li>
           </ul>
           <form class="d-flex" role="search">
