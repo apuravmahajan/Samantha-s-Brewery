@@ -11,5 +11,6 @@ urlpatterns = [
     path('books', views.books, name='books'),
     path('menu', views.menu, name = 'menu'),
     path('bookingcart', views.bookingcart,name='bookingcart'),
-    path('gallery', views.gallery,name='gallery')
+    path('gallery', views.gallery,name='gallery'),
+    path('book-form',views.process_bookings,name='book-form')
 ]

@@ -1,6 +1,8 @@
 from django.db import models
 from PIL import Image
 from multiselectfield import MultiSelectField
+from datetime import date
+
 
 # Create your models here.
 class Contact(models.Model):
@@ -92,4 +94,11 @@ class ProductImage(models.Model):
     caption = models.CharField(max_length=200, blank=True)
 
 class Bookings(models.Model):
-    custName=models.CharField
+    name=models.CharField(default="", max_length=122)
+    phone=models.CharField(default="", max_length=12)
+    items=models.TextField(default="")
+    booking_date = models.DateField(default=date.today)
+    final_date = models.DateField(default=date.today)
+
+    def __str__(self):
+        return self.name

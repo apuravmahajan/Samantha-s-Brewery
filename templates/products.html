@@ -48,7 +48,8 @@ Products
                     <p class="card-text">{{ item.desc }}</p>
                     <p class="card-text"><strong>In Stock: {{ item.stock }}</strong></p>
                     <p class="card-text"><strong>₹{{ item.price }}</strong></p>
-                    <button name = "{{item.name}}" class="btn btn-primary book-this">Book This</button>
+                    <button id = "book {{item.name}}" name = "{{item.name}}" class="position-absolute bottom-0 start-50 translate-middle btn btn-primary bookButton">Book This</button>
+                    <button id ="remove {{item.name}}" name="{{item.name}}" class="position-absolute bottom-0 start-50 translate-middle btn btn-primary removeButton">Remove</button>
                   </div>
                 </div>
               </div>
@@ -63,22 +64,53 @@ Products
   <button id ="book-cart" class="btn btn-primary fixed-bottom">Booking Cart <span id = "cart-count">0</span></button>
   
   <script>
+
     let cartCount = {{ cartCount|default:0 }};
     let items = {{ items|default:"[]"|safe }};
    
-    const cartCountElement = document.getElementById('cart-count');
-    const bookThisButtons = document.querySelectorAll('.book-this');
+    const cartCountElement = document.getElementById('cart-count');    
+    cartCountElement.textContent=cartCount;
+    const bookThisButtons = document.querySelectorAll('.bookButton');
+    
+    const removeButtons = document.querySelectorAll('.removeButton');
+
+    removeButtons.forEach(button=> {
+      button.style.visibility='hidden';
+      button.addEventListener('click',()=>{
+        let bookId = "book "+button.name;
+        if(items.includes(button.name))
+        {
+          cartCount--;
+          cartCountElement.textContent=cartCount;
+          items.splice(items.indexOf(button.name),1);
+          button.style.visibility='hidden'
+          document.getElementById(bookId).style.visibility='visible';
+        }
+        else{
+          alert("Not in cart")
+        }
+        
+      });
+    });
+
     bookThisButtons.forEach(button=> {
+      let remId="remove "+button.name;
+      if(items.includes(button.name))
+        {
+          button.style.visibility='hidden';
+          document.getElementById(remId).style.visibility='visible';
+        }
       button.addEventListener('click',()=>{
         if(items.includes(button.name))
         {
-          alert("already in cart")
+          alert("Already in cart");
         }
         else{
           cartCount++;
           cartCountElement.textContent=cartCount;
           items.push(button.name);
-          button.disabled=true;
+          button.style.visibility='hidden';
+          document.getElementById(remId).style.visibility='visible';
         }
         
       });

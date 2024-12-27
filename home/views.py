@@ -1,9 +1,11 @@
 from django.shortcuts import render, HttpResponse
 from datetime import datetime
-from home.models import Contact, Food_Item, ProductItem
+from home.models import Contact, Food_Item, ProductItem, Bookings
 from django.contrib import messages
 from collections import defaultdict
 import json
+from datetime import date, timedelta
+from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
@@ -24,22 +26,41 @@ def contact(request):
      return render(request, 'contact.html')
 
 def products(request):
+     items = json.loads(request.GET.get('items', '[]')) 
+     cartCount = int(request.GET.get('count', 0))
      product_items = ProductItem.objects.prefetch_related('images').all()
      categories = defaultdict(list)
      for item in product_items:
         categories[item.get_type_display()].append(item)
      categories = dict(categories)
-     return render(request,"products.html", {'categories':categories})
+     return render(request,"products.html", {'categories':categories, 'items':items,'cartCount':cartCount})
+
+def process_bookings(request):
+     if request.method == 'POST':
+          name = request.POST.get('name')
+          phone = request.POST.get('phone')
+          items= json.loads(request.POST.get('items','[]'))
+          bDate = date.today()
+          fdate= bDate + timedelta(days=5)
+          booking = Bookings(name=name, phone=phone, items=items, booking_date=bDate, final_date=fdate)
+          booking.save()
+          print(f"Name: {name}, Phone: {phone}, Items: {items}, Booking Date: {bDate}, Final Date: {fdate}")
+          return bookingcart(request)
+     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+     
 
 def bookingcart(request):
+     is_post = request.method == "POST"
      items = json.loads(request.GET.get('items', '[]')) 
      cartCount = int(request.GET.get('count', 0))
      product_items=[]
      for item in items:
           product = ProductItem.objects.prefetch_related('images').filter(name=item).first()
           if(product):
-               product_items.append(product)
-     return render(request, "bookingcart.html",{'cartCount':cartCount, 'products':product_items})
+                product_items.append(product)
+         
+     return render(request, "bookingcart.html",{'cartCount':cartCount, 'products':product_items, 'itemList':items, 'is_post':is_post})
 
 def books(request):
      return render(request,"books.html")
