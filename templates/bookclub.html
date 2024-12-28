@@ -7,6 +7,15 @@ Book Club
 {% block body %}
 <h1 class="py-5">Book Club</h1>
 
+{%if message%}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  {{message}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+{%endif%}
+
+
 <div class="container">
   <div class="row">
     <h2>Currently Reading:</h2>
@@ -16,7 +25,7 @@ Book Club
       <img src="{{curBook.image.url}}" class="img-fluid" alt="Book Cover">
     </div>
     <div class="col-lg-8">
-      <h2>{{curBook.name}}</h2>
+      <h2 class="cr-bk-title">{{curBook.name}}</h2>
       <p>{{curBook.author}}</p>
       <p>{{curBook.desc}}</p>
       <p>{{curBook.month|date:"F Y"}}</p>
@@ -37,47 +46,63 @@ Book Club
       <img src="{{book.image.url}}" class="img-fluid" alt="Book Cover">
     </div>
     <div class="col-lg-8">
-      <h2>{{book.name}}</h2>
+      <h2 class="ar-bk-title">{{book.name}}</h2>
       <p>{{book.author}}</p>
       <p>{{book.desc}}</p>
     </div>
   </div>
 </div>
 {%endfor%}
-</div>
 
-<div class="pagination">
+<div class="row">
+<nav aria-label="...">
+<ul class="pagination">
+
   {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}">Prev</a>
-  {% else %}
-      <span>Prev</span>
-  {% endif %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    </li>
+{% else %}
+    <li class="page-item disabled">
+        <span class="page-link">Previous</span>
+    </li>
+{% endif %}
 
   {% for num in page_obj.paginator.page_range %}
-      {% if page_obj.number == num %}
-          <a href="?page={{ num }}" class="active">{{ num }}</a>
-      {% else %}
-          <a href="?page={{ num }}">{{ num }}</a>
-      {% endif %}
+      <li class="page-item {% if page_obj.number == num %} active {% endif %}"">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+      </li>
   {% endfor %}
 
+  
+
   {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">Next</a>
-  {% else %}
-      <span>Next</span>
-  {% endif %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+    </li>
+{% else %}
+    <li class="page-item disabled">
+        <span class="page-link">Next</span>
+    </li>
+{% endif %}
+</ul>
+</nav>
+
+</div>
 </div>
 
-
 <div id="form" class="container">
-    <form>
+    <form id="clubregistration" action="/process-club-registration" method='post'> 
       {% csrf_token %}
       <div class="d-flex justify-content-center px-4 mx-4 py-4">
         <h3>Register for the Book Club</h3>
       </div>
-        <div class="col py-3 mx-3" style="border:1px solid black;">
+        <div class="col py-3 mx-3">
           <div class="d-flex justify-content-center px-4 mx-4 py-4">
             <input type="text" name='name' class="form-control col-lg-3 col-md-4 col-sm-6" placeholder="Name" required>
+          </div>
+          <div class="d-flex justify-content-center px-4 mx-4 py-4">
+            <input type="email" name='email' class="form-control col-lg-3 col-md-4 col-sm-6" placeholder="Email" required>
           </div>
           <div class="d-flex justify-content-center px-4 mx-4 py-4">
             <input type="number" name='phone' class="form-control col-lg-3 col-md-4 col-sm-6" placeholder="Phone Number" required>

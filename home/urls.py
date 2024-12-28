@@ -13,5 +13,7 @@ urlpatterns = [
     path('bookingcart', views.bookingcart,name='bookingcart'),
     path('gallery', views.gallery,name='gallery'),
     path('book-form',views.process_bookings,name='book-form'),
-    path('events',views.events,name='events')
+    path('events',views.events,name='events'),
+    path('process-club-registration',views.process_bookclub_registration,name='process_bookclub_registration'),
+    path('event-bookings',views.eventBookings,name='event-bookings')
 ]

@@ -112,3 +112,30 @@ class Book(models.Model):
 
     def __str__(self):
         return self.name
+    
+class BookClubRegistration(models.Model):
+    name=models.CharField(default="", max_length=122)
+    email=models.CharField(default="", max_length=122)
+    phone=models.CharField(default="", max_length=12)
+    
+    def __str__(self):
+        return self.name
+    
+class Event(models.Model):
+    name=models.CharField(default="", max_length=122)
+    date=models.DateField(default=date.today)
+    time=models.TimeField()
+    image=models.ImageField(upload_to='images/books/')
+    desc=models.TextField(default="")
+
+    def __str__(self):
+        return self.name
+    
+class EventBooking(models.Model):
+    name=models.CharField(default="", max_length=122)
+    email=models.CharField(default="", max_length=122)
+    phone=models.CharField(default="", max_length=12)
+    event=models.ForeignKey(Event, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
