@@ -48,7 +48,8 @@ Products
                     <p class="card-text">{{ item.desc }}</p>
                     <p class="card-text"><strong>In Stock: {{ item.stock }}</strong></p>
                     <p class="card-text"><strong>₹{{ item.price }}</strong></p>
-                    <button id = "book {{item.name}}" name = "{{item.name}}" class="position-absolute bottom-0 start-50 translate-middle btn btn-primary bookButton">Book This</button>
+
+                    <button {%if item.stock == 0%} disabled {%endif%} id = "book {{item.name}}" name = "{{item.name}}" class="position-absolute bottom-0 start-50 translate-middle btn btn-primary bookButton">Book This</button>
                     <button id ="remove {{item.name}}" name="{{item.name}}" class="position-absolute bottom-0 start-50 translate-middle btn btn-primary removeButton">Remove</button>
                   </div>
                 </div>

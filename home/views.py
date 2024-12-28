@@ -1,11 +1,12 @@
 from django.shortcuts import render, HttpResponse
 from datetime import datetime
-from home.models import Contact, Food_Item, ProductItem, Bookings
+from home.models import Contact, Food_Item, ProductItem, Booking, Book
 from django.contrib import messages
 from collections import defaultdict
 import json
 from datetime import date, timedelta
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
@@ -42,16 +43,23 @@ def process_bookings(request):
           items= json.loads(request.POST.get('items','[]'))
           bDate = date.today()
           fdate= bDate + timedelta(days=5)
-          booking = Bookings(name=name, phone=phone, items=items, booking_date=bDate, final_date=fdate)
+          booking = Booking(name=name, phone=phone, items=items, booking_date=bDate, final_date=fdate)
           booking.save()
-          print(f"Name: {name}, Phone: {phone}, Items: {items}, Booking Date: {bDate}, Final Date: {fdate}")
-          return bookingcart(request)
+
+          for item in items:
+               product = ProductItem.objects.filter(name=item).first()
+               if(product):
+                    product.stock -= 1
+                    product.save()
+
+          is_post = request.method == "POST"
+          return render(request, "bookingcart.html",{'cartCount':0,'is_post':is_post,'fdate':fdate, 'products':[], 'itemList':[]})
+
      return JsonResponse({'error': 'Invalid request'}, status=400)
 
      
 
 def bookingcart(request):
-     is_post = request.method == "POST"
      items = json.loads(request.GET.get('items', '[]')) 
      cartCount = int(request.GET.get('count', 0))
      product_items=[]
@@ -60,10 +68,18 @@ def bookingcart(request):
           if(product):
                 product_items.append(product)
          
-     return render(request, "bookingcart.html",{'cartCount':cartCount, 'products':product_items, 'itemList':items, 'is_post':is_post})
+     return render(request, "bookingcart.html",{'cartCount':cartCount, 'products':product_items, 'itemList':items})
 
-def books(request):
-     return render(request,"books.html")
+def bookclub(request):
+     books = Book.objects.all().order_by("-month")
+     curBook=books.first()
+     archBooks=books[1:]
+     paginator=Paginator(archBooks, 3)
+
+     page_number = request.GET.get('page')
+     page_obj = paginator.get_page(page_number)
+
+     return render(request,"bookclub.html",{'curBook':curBook, 'page_obj':page_obj})
 
 def menu(request):
      food_items = Food_Item.objects.all()
@@ -75,3 +91,6 @@ def menu(request):
 
 def gallery(request):
      return render(request,'gallery.html')
+
+def events(request):
+     return render(request,'events.html')

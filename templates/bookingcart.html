@@ -9,17 +9,17 @@ Booking Cart
 <h1 class="py-5 my-3">Booking Cart</h1>
 {% if is_post %}
 <div>
-    <!-- Content to display only on POST requests -->
     <p>Items Sucessfully Booked!</p>
+    <p>Please pick up your products by {{fdate}} from the store.</p>
 </div>
-{%else%}
-<p class="py-2"> Check out your Cart</p>
-{% endif %}
 
+{% endif %}
+<p id="info" class="py-2"> Check out your Cart</p>
 <div class="container" >
   <div class = "col" >
-    {% for item in products %}
-      <div id="{{item.name}}" class=" d-flex justify-content-center px-4 mx-4 my-4 py-4">
+    {%if products%}
+      {% for item in products %}
+        <div id="{{item.name}}" class=" d-flex justify-content-center px-4 mx-4 my-4 py-4">
         <div class="card mb-4 col-lg-3 col-md-4 col-sm-6 shadow-sm ">
             {% if item.images.all %}
             <div id="carousel-{{ item.id }}" class="carousel slide" data-bs-ride="carousel">
@@ -55,11 +55,12 @@ Booking Cart
         </div>
       </div>
     {% endfor %}
+    {%endif%}
     </div> 
   </div>
 
 <div class="d-flex justify-content-center">
-  <button id ="back" class="btn btn-primary ">Add Products</button>
+  <button id ="back" class="btn btn-primary ">Browse Products</button>
 </div>
 <div id="form" class="container">
     <form id="bookForm" action="/book-form" method='post'>
@@ -98,42 +99,47 @@ Booking Cart
 
 
   <script>
-    let cartCount = parseInt({{ cartCount }},10); 
+    let cartCount = parseInt({{ cartCount|default:0 }},10); 
     const cartCountElements = document.querySelectorAll('.cartCount');
-    const removeButton = document.querySelectorAll('.remove');
-    let itemList={{itemList|safe}};
+    let itemList={{itemList|default:"[]"|safe}};
 
     function checkCount() {
       const element = document.getElementById("form");
-      
+      const info = document.getElementById("info");
       if ( cartCount === 0) {
+          info.textContent = "No items in cart";
           element.style.display = "none"; // Hide element
       } else {
+          info.textContent = "Check out your Cart";
           element.style.display = "block"; // Show element
       }
   }
-  checkCount();
 
+    checkCount();
+  
+    if(document.querySelectorAll('.remove'))
+    {const removeButton = document.querySelectorAll('.remove');
     removeButton.forEach(button =>{
-        button.addEventListener('click', ()=>{
-                if (cartCount > 0) { 
-                    if(itemList.includes(button.name))
-                    {
-                        document.getElementById(button.name).remove();
-                        itemList.splice(itemList.indexOf(button.name), 1);
-                        const myList = JSON.stringify(itemList);
-                        document.getElementById("iteminput").value = myList;
-                        
-                    }
-                    cartCount--; 
-                    cartCountElements.forEach(element => {
-                        element.textContent = cartCount;
-                    }); 
-                    checkCount();
-                }
-        });
+      button.addEventListener('click', ()=>{
+              if (cartCount > 0) { 
+                  if(itemList.includes(button.name))
+                  {
+                      document.getElementById(button.name).remove();
+                      itemList.splice(itemList.indexOf(button.name), 1);
+                      const myList = JSON.stringify(itemList);
+                      document.getElementById("iteminput").value = myList;
+                      
+                  }
+                  cartCount--; 
+                  cartCountElements.forEach(element => {
+                      element.textContent = cartCount;
+                  }); 
+                  checkCount();
+              }
+      });
 
-    });
+  });
+  }
     
     document.getElementById("back").addEventListener('click', ()=>{
         // Serialize the items array and cartCount as query parameters

@@ -93,12 +93,22 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to='product_images/')
     caption = models.CharField(max_length=200, blank=True)
 
-class Bookings(models.Model):
+class Booking(models.Model):
     name=models.CharField(default="", max_length=122)
     phone=models.CharField(default="", max_length=12)
     items=models.TextField(default="")
     booking_date = models.DateField(default=date.today)
     final_date = models.DateField(default=date.today)
+
+    def __str__(self):
+        return self.name
+
+class Book(models.Model):
+    name=models.CharField(default="", max_length=122)
+    author=models.CharField(default="", max_length=122)
+    month=models.DateField(default=date.today)
+    image=models.ImageField(upload_to='images/books/')
+    desc=models.TextField(default="")
 
     def __str__(self):
         return self.name
