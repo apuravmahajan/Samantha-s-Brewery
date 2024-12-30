@@ -5,15 +5,30 @@ Book Club
 {% endblock title %}
 
 {% block body %}
-<h1 class="py-5">Book Club</h1>
+
+
+
+<div class="container">
+  <div class="row justify-content-start">
+    <div class="col-3">
+      <h1 class="my-4">Book Club</h1>
+    </div>
+    <div class="col-3">
+      <button id="book" class="btn btn-primary my-4">Join</button>
+    </div>
+  </div>
+</div>
+
+
 
 {%if message%}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
   {{message}}
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-
 {%endif%}
+
+
 
 
 <div class="container">
@@ -121,5 +136,36 @@ Book Club
       </div>
     </form>
   </div>
-  
+
+<script>
+
+const form = document.getElementById('form');
+      form.style.display = 'none';
+
+      function toggleForm() {
+        
+        form.style.display = 'block'; // Show the form when button is clicked
+      }
+      
+      // Add event listener to the bookevent button
+      document.getElementById('book').addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevent the click event from bubbling up
+        toggleForm();
+      });
+      
+      // Function to hide the form if the click is outside of it
+      document.addEventListener('click', function(event) {
+      
+        const button = document.getElementById('book'); // The button that shows the form
+        
+        // Check if the form is visible and the click is outside the form and button
+        if (form.style.display === 'block' && !form.contains(event.target) && event.target !== button) {
+          form.style.display = 'none'; // Hide the form
+        }
+      });
+
+</script>
+
+
+
 {% endblock body %}

@@ -58,16 +58,18 @@ a:hover {
   }
 
   /* Form container */
-form{
+  form {
+    position: fixed; /* Make the form stay in a fixed position on the screen */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
     background: linear-gradient(to bottom, #FAF3E0, #F2E1C1);
-    /*background-color: #FAF3E0; /* Soft neutral background */
-    background-size: cover;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     max-width: 600px;
-    margin: 40px auto;
     font-family: 'Poppins', sans-serif; /* Clean and modern font */
+    z-index: 9999; /* Make sure it stays above other content */
+    transform: translate(-50%, -50%); /* Adjust to center the form exactly */
 }
 
 

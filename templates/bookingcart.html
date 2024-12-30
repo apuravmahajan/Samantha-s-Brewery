@@ -61,14 +61,13 @@ Booking Cart
   </div>
  
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center my-4">
   <button id ="back" class="btn btn-primary ">Browse Products</button>
 </div>
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-  <path fill="#E2725B" fill-opacity="1" d="M0,64L1440,256L1440,320L0,320Z"></path>
-</svg>
-
+<div class="d-flex justify-content-center my-4">
+<button id="showform" class="btn btn-primary">Book Now</button>
+</div>
 
 <div id="form" class="container">
     <form id="bookForm" action="/book-form" method='post'>
@@ -165,6 +164,36 @@ Booking Cart
               document.getElementById("iteminput").value = myList;
       });
 
+      const button = document.getElementById('showform');
+      const form = document.getElementById('form');
+      form.style.display = 'none';
+
+      if(cartCount === 0)
+      {
+        button.style.display = 'none';
+      }
+
+      function toggleForm() {
+        
+        form.style.display = 'block'; // Show the form when button is clicked
+      }
+      
+      // Add event listener to the bookevent button
+      button.addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevent the click event from bubbling up
+        toggleForm();
+      });
+      
+      // Function to hide the form if the click is outside of it
+      document.addEventListener('click', function(event) {
+      
+         // The button that shows the form
+        
+        // Check if the form is visible and the click is outside the form and button
+        if (form.style.display === 'block' && !form.contains(event.target) && event.target !== button) {
+          form.style.display = 'none'; // Hide the form
+        }
+      });
       
   </script>
 

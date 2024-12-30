@@ -93,7 +93,7 @@ Book Club
 </div>
 <button id="bookevent" class="btn btn-primary">Book Event</button>
 
-<div id="form" class="container" style="display:none">
+<div id="form" class="container">
     <form id="eventregistration" action="/event-bookings" method='post'> 
       {% csrf_token %}
       <div class="d-flex justify-content-center px-4 mx-4 py-4">
@@ -131,10 +131,33 @@ Book Club
       </div>
     </form>
   </div>
+</div>
+
 
 <script>
-    document.getElementById("bookevent").addEventListener("click", function(){
-        document.getElementById("form").style.display = "block";
-    });
-</script>
+const form = document.getElementById('form');
+form.style.display = 'none'; 
+function toggleForm() {
+
+  form.style.display = 'block'; // Show the form when button is clicked
+}
+
+// Add event listener to the bookevent button
+document.getElementById('bookevent').addEventListener('click', function(event) {
+  event.stopPropagation(); // Prevent the click event from bubbling up
+  toggleForm();
+});
+
+// Function to hide the form if the click is outside of it
+document.addEventListener('click', function(event) {
+  const button = document.getElementById('bookevent'); // The button that shows the form
+  
+  // Check if the form is visible and the click is outside the form and button
+  if (form.style.display === 'block' && !form.contains(event.target) && event.target !== button) {
+    form.style.display = 'none'; // Hide the form
+  }
+});
+
+  </script>
+
 {% endblock body %}
